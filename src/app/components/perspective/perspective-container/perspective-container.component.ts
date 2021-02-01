@@ -283,7 +283,14 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
    * zoom in-out with touches
    */
   private _zoomInOutWithTouches(): void {
-    const distance = this._movedDistance - this._startDistance > 20 ? 2 : -2;
+    const d = this._movedDistance - this._startDistance;
+    let distance = 0;
+
+    if (d > 20) {
+      distance = 2;
+    } else if (d < -20) {
+      distance = -2;
+    }
 
     if (this._canScroll(distance)) {
       this.objects.forEach(object => {
