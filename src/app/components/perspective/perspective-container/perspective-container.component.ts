@@ -197,19 +197,11 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
   @HostListener('wheel', ['$event'])
   onHostWheel(event: WheelEvent): void {
-    this._scrollTheContents(event.deltaY);
-  }
-
-  /**
-   * scroll the contents with y changes
-   * @param y y
-   */
-  private _scrollTheContents(y: number): void {
-    if (this._canScroll(y)) {
+    if (this._canScroll(event.deltaY)) {
       this.objects.forEach(object => {
         // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
         // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
-        object.distance += Math.ceil(y / 100) * this._scrollSpeed;
+        object.distance += Math.ceil(event.deltaY / 100) * this._scrollSpeed;
       });
     }
   }
@@ -297,7 +289,14 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
     this.distance = distance;
 
-    this._scrollTheContents(-distance);
+    if (this._canScroll(-distance)) {
+      this.objects.forEach(object => {
+        // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
+        // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
+        object.distance += Math.ceil(distance) * this._scrollSpeed;
+      });
+    }
+
     this._startDistance = this._movedDistance;
   }
 
