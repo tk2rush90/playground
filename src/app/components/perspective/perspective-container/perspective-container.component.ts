@@ -293,8 +293,10 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     }
 
     if (this._canScroll(distance)) {
-      this.objects.forEach(object => {
-        object.distance += distance * this._scrollSpeed;
+      this.objects.forEach((object, index) => {
+        setTimeout(() => {
+          object.distance += distance * this._scrollSpeed;
+        }, index * 100);
       });
 
       this._startDistance = this._movedDistance;
