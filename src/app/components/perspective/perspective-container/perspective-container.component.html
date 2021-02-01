@@ -1,0 +1,9 @@
+<div
+  *ngFor="let item of objects"
+  [style.background-color]="item.backgroundColor"
+  [style.left]="item.x + 'px'"
+  [style.top]="item.y + 'px'"
+  [style.transform]="item.transform"
+  [style.z-index]="item.distance">
+  {{item.distance}}
+</div>

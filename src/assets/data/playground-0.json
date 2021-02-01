@@ -1,0 +1,9 @@
+{
+  "data": [
+    {
+      "thumbnail": "/assets/thumbnails/001.png",
+      "routes": ["/perspective"]
+    }
+  ],
+  "hasNext": false
+}

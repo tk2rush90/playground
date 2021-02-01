@@ -1,0 +1,74 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  @include box(100%);
+  @include topLeft;
+  @include flex(stretch, null, column, nowrap);
+  position: absolute;
+  background-color: #2A3030;
+  overflow: auto;
+}
+
+// header
+.tk-header {
+  @include flex(center, center);
+  @include padding(50px 0);
+}
+
+// image container
+.tk-image-container {
+  @include box(120px);
+  @include flex(center, center);
+  background-color: $white;
+  user-select: none;
+
+  img {
+    display: block;
+    pointer-events: none;
+  }
+}
+
+// body
+.tk-body {
+  @include flex(center, null, column);
+  @include padding(50px 0);
+}
+
+// list container
+.tk-list-container {
+  width: calc(100% - 40px);
+  max-width: 800px;
+}
+
+// background item
+.tk-background-item {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+// shadow item
+.tk-shadow-item {
+  transition: box-shadow .1s;
+  box-shadow: 0 3px 10px rgba($black, .5);
+
+  &:hover {
+    box-shadow: 0 3px 20px rgba($black, .5);
+  }
+}
+
+// list item
+.tk-list-item {
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  width: 100%;
+  height: 250px;
+}
+
+.tk-list-item + .tk-list-item {
+  margin-top: 40px;
+}

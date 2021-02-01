@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "delete:build": "node scripts/delete.js",
+    "build:github": "npm run delete:build && ng build --prod --output-path=docs --deploy-url=/playground/ --base-href=/playground"
   },
   "private": true,
   "dependencies": {
