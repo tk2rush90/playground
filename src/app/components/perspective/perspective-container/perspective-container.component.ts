@@ -112,6 +112,8 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   numberOfObjects = 100;
   // perspective objects
   objects: PerspectiveObject[] = [];
+  // distance
+  distance = 0;
   // center point
   private _center: Point = {
     x: 0,
@@ -284,6 +286,8 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     const distance = this._movedDistance - this._startDistance;
 
     console.log(distance);
+
+    this.distance = distance;
   }
 
   /**
