@@ -197,11 +197,19 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
   @HostListener('wheel', ['$event'])
   onHostWheel(event: WheelEvent): void {
-    if (this._canScroll(event.deltaY)) {
+    this._scrollTheContents(event.deltaY);
+  }
+
+  /**
+   * scroll the contents with y changes
+   * @param y y
+   */
+  private _scrollTheContents(y: number): void {
+    if (this._canScroll(y)) {
       this.objects.forEach(object => {
         // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
         // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
-        object.distance += Math.ceil(event.deltaY / 100) * this._scrollSpeed;
+        object.distance += Math.ceil(y / 100) * this._scrollSpeed;
       });
     }
   }
@@ -288,6 +296,9 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     console.log(distance);
 
     this.distance = distance;
+
+    this._scrollTheContents(distance);
+    this._startDistance = this._movedDistance;
   }
 
   /**
@@ -298,6 +309,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     if (this.host && !this._touchStarted) {
       this.host.addEventListener('touchend', this._handleTouchEnd);
       this.host.addEventListener('touchcancel', this._handleTouchEnd);
+      this._touchStarted = false;
     }
   }
 
