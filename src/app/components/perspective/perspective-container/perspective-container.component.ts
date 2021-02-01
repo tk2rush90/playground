@@ -309,7 +309,6 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     if (this.host && !this._touchStarted) {
       this.host.addEventListener('touchend', this._handleTouchEnd);
       this.host.addEventListener('touchcancel', this._handleTouchEnd);
-      this._touchStarted = false;
     }
   }
 
@@ -319,6 +318,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   private _handleTouchEnd = (): void => {
     this._removeTouchMoveEvent();
     this._removeTouchEndEvent();
+    this._touchStarted = false;
   }
 
   /**
