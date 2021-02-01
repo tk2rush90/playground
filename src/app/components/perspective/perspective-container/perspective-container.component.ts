@@ -297,7 +297,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
     this.distance = distance;
 
-    this._scrollTheContents(distance);
+    this._scrollTheContents(-distance);
     this._startDistance = this._movedDistance;
   }
 
