@@ -1,9 +1,14 @@
 import {BaseModel} from '@playground/models/base-model';
 import {randomPick} from '@playground/utils/random.util';
+import {environment} from '../../environments/environment';
+
+const {
+  prefix,
+} = environment;
 
 export interface IPlaygroundListItem {
   thumbnail: string;
-  routes: string;
+  routes: string[];
 }
 
 export enum PlaygroundListItemSize {
@@ -13,7 +18,7 @@ export enum PlaygroundListItemSize {
 
 export class PlaygroundListItem extends BaseModel implements IPlaygroundListItem {
   thumbnail: string;
-  routes: string;
+  routes: string[];
   // item size
   private _size: PlaygroundListItemSize = randomPick([
     PlaygroundListItemSize.normal,
@@ -24,7 +29,7 @@ export class PlaygroundListItem extends BaseModel implements IPlaygroundListItem
     super();
 
     this.thumbnail = data?.thumbnail || '';
-    this.routes = data?.routes || '';
+    this.routes = data?.routes || [];
   }
 
   /**
@@ -32,7 +37,7 @@ export class PlaygroundListItem extends BaseModel implements IPlaygroundListItem
    */
   get backgroundImage(): string | void {
     if (this.thumbnail) {
-      return `url(${this.thumbnail})`;
+      return `url(${prefix + this.thumbnail})`;
     }
   }
 
