@@ -294,7 +294,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
         this.objects.forEach(object => {
           // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
           // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
-          object.distance += Math.ceil(distance) * this._scrollSpeed;
+          object.distance += this._scrollSpeed;
         });
       }
 
