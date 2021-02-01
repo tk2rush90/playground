@@ -11,7 +11,7 @@
   <div class="tk-list-container">
     <a
       *ngFor="let item of data; let index = index"
-      [routerLink]="item.routes"
+      [routerLink]="prefix + item.routes"
       [class.span-2]="item.wide"
       [style.background-image]="item.backgroundImage"
       class="tk-list-item tk-background-item tk-shadow-item"></a>
