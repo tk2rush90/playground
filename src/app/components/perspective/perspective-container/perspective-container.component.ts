@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Point} from '@playground/utils/type.util';
 import {randomNumber, randomPick} from '@playground/utils/random.util';
 import {getPointOnArc} from '@playground/utils/math.util';
@@ -132,7 +132,6 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -284,22 +283,15 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
    * zoom in-out with touches
    */
   private _zoomInOutWithTouches(): void {
-    const distance = this._movedDistance - this._startDistance > 0 ? 2 : -2;
+    const distance = this._movedDistance - this._startDistance > 20 ? 2 : -2;
 
-    this.distance = distance;
+    if (this._canScroll(distance)) {
+      this.objects.forEach(object => {
+        object.distance += distance * this._scrollSpeed;
+      });
+    }
 
-    setTimeout(() => {
-      if (this._canScroll(distance)) {
-        this.objects.forEach(object => {
-          // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
-          // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
-          object.distance += distance * this._scrollSpeed;
-        });
-      }
-
-      this._startDistance = this._movedDistance;
-      this.changeDetectorRef.detectChanges();
-    }, 10);
+    this._startDistance = this._movedDistance;
   }
 
   /**
