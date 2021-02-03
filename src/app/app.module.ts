@@ -6,6 +6,13 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {SubscriptionService} from '@playground/services/common/subscription.service';
 import {ToastModule} from '@playground/components/common/toast/toast.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
+const {
+  prefix,
+  production,
+} = environment;
 
 @NgModule({
   declarations: [
@@ -16,6 +23,7 @@ import {ToastModule} from '@playground/components/common/toast/toast.module';
     AppRoutingModule,
     HttpClientModule,
     ToastModule,
+    ServiceWorkerModule.register(`${prefix}/ngsw-worker.js`, { enabled: production }),
   ],
   providers: [
     SubscriptionService,

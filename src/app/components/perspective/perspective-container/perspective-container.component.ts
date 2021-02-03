@@ -3,8 +3,12 @@ import {Point} from '@playground/utils/type.util';
 import {randomNumber, randomPick} from '@playground/utils/random.util';
 import {getPointOnArc} from '@playground/utils/math.util';
 import {getDistanceOfFingers, getWheelDirection, WheelDirection} from '@playground/utils/event.util';
+import {easeOutSine} from '@playground/utils/animation.util';
 
 export interface PerspectiveObjectOptions {
+  // screen width / height
+  width: number;
+  height: number;
   // center of screen
   center: Point;
   // initial distance
@@ -12,12 +16,22 @@ export interface PerspectiveObjectOptions {
 }
 
 export class PerspectiveObject {
+  // animation frame
+  private _frame = 0;
+  private _startTime = 0;
   // object distance
   private _distance = 0;
+  private _distanceDuration = 1000;
+  private _startDistance = 0;
+  private _targetDistance = 0;
+  private _changingDistance = 0;
   // screen center position
   private _center: Point;
   // object center position
   private _position!: Point;
+  // screen width / height
+  private _width = 0;
+  private _height = 0;
   // circle radius
   // object will be positioned on random angle of arc of this circle
   private readonly _radius = 300;
@@ -35,6 +49,8 @@ export class PerspectiveObject {
   ]);
 
   constructor(options: PerspectiveObjectOptions) {
+    this._width = options.width;
+    this._height = options.height;
     this._center = options.center;
     this._distance = options.distance || 0;
     this._angle = randomNumber(0, 360);
@@ -82,7 +98,9 @@ export class PerspectiveObject {
    * @param distance distance
    */
   set distance(distance: number) {
-    this._distance = distance;
+    this._setDistanceTarget(distance);
+    this._stopAnimating();
+    this._animateDistance();
   }
 
   /**
@@ -93,12 +111,84 @@ export class PerspectiveObject {
   }
 
   /**
+   * return the animating target distance
+   */
+  get targetDistance(): number {
+    return this._targetDistance;
+  }
+
+  /**
+   * return the `z-index`
+   */
+  get zIndex(): number {
+    return Math.ceil(this._distance * 100);
+  }
+
+  /**
    * resize the window
    * @param center center position
+   * @param width width
+   * @param height height
    */
-  resize(center: Point): void {
+  viewResized(center: Point, width: number, height: number): void {
     this._center = center;
+    this._width = width;
+    this._height = height;
     this._setBasePosition();
+  }
+
+  /**
+   * set distance target
+   * @param distance distance
+   */
+  private _setDistanceTarget(distance: number): void {
+    this._startDistance = this._distance;
+    this._targetDistance += distance;
+    this._changingDistance = this._targetDistance - this._startDistance;
+  }
+
+  /**
+   * animate distance
+   */
+  private _animateDistance(): void {
+    this._frame = requestAnimationFrame(this._calculateAnimatedDistance);
+  }
+
+  /**
+   * calculate animated distance
+   * @param time time
+   */
+  private _calculateAnimatedDistance = (time: number): void => {
+    if (!this._startTime) {
+      this._startTime = time;
+    }
+
+    const t = time - this._startTime;
+
+    if (t > this._distanceDuration) {
+      this._stopAnimating();
+    } else {
+      this._distance = easeOutSine(
+        Math.min(t, this._distanceDuration),
+        this._startDistance,
+        this._changingDistance,
+        this._distanceDuration
+      );
+
+      this._animateDistance();
+    }
+  }
+
+  /**
+   * stop animating
+   */
+  private _stopAnimating(): void {
+    cancelAnimationFrame(this._frame);
+    this._startTime = 0;
+  }
+
+  get hidden(): boolean {
+    return this._distance < -80 || this._distance > 40;
   }
 }
 
@@ -118,6 +208,11 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   private _center: Point = {
     x: 0,
     y: 0,
+  };
+  // view width and height
+  private _view = {
+    width: 0,
+    height: 0,
   };
   // timers
   private _timers: any[] = [];
@@ -139,6 +234,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
 
   ngAfterViewInit(): void {
     this._setCenterPoint();
+    this._setViewSize();
     this._createObjects();
     this._setInitialDistance();
   }
@@ -162,6 +258,16 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   }
 
   /**
+   * set view size
+   */
+  private _setViewSize(): void {
+    if (this.host) {
+      this._view.width = this.host.offsetWidth;
+      this._view.height = this.host.offsetHeight;
+    }
+  }
+
+  /**
    * create objects
    */
   private _createObjects(): void {
@@ -169,6 +275,8 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
       const object = new PerspectiveObject({
         center: this._center,
         distance: this.numberOfObjects,
+        width: this._view.width,
+        height: this._view.height,
       });
 
       this.objects.push(object);
@@ -201,7 +309,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
       this.objects.forEach(object => {
         // `deltaY` is working by `100px` and it's too big to control scrolling position with `z`
         // so divide the `deltaY` by 100 and multiple the `_scrollSpeed`
-        object.distance += Math.ceil(event.deltaY / 100) * this._scrollSpeed;
+        object.distance = Math.ceil(event.deltaY / 100) * this._scrollSpeed;
       });
     }
   }
@@ -212,7 +320,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
    */
   private _canScroll(y: number): boolean {
     const direction = getWheelDirection(y);
-    const distances = this.objects.map(object => object.distance);
+    const distances = this.objects.map(object => object.targetDistance);
     // get maximum distance and minimum distance of objects
     const max = Math.max(...distances);
     const min = Math.min(...distances);
@@ -225,6 +333,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   @HostListener('window:resize')
   onWindowResize(): void {
     this._setCenterPoint();
+    this._setViewSize();
     this._updateCenterPosition();
   }
 
@@ -232,7 +341,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
    * update center position of each object
    */
   private _updateCenterPosition(): void {
-    this.objects.forEach(object => object.resize(this._center));
+    this.objects.forEach(object => object.viewResized(this._center, this._view.width, this._view.height));
   }
 
   @HostListener('touchstart', ['$event'])
@@ -286,17 +395,15 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
     const d = this._movedDistance - this._startDistance;
     let distance = 0;
 
-    if (d > 20) {
+    if (d > 10) {
       distance = 2;
-    } else if (d < -20) {
+    } else if (d < -10) {
       distance = -2;
     }
 
     if (this._canScroll(distance)) {
-      this.objects.forEach((object, index) => {
-        setTimeout(() => {
-          object.distance += distance * this._scrollSpeed;
-        }, index * 100);
+      this.objects.forEach(object => {
+        object.distance += distance * this._scrollSpeed;
       });
 
       this._startDistance = this._movedDistance;

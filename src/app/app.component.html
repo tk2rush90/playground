@@ -3,3 +3,17 @@
 
 <!-- toast outlet -->
 <app-toast-outlet></app-toast-outlet>
+
+<!-- update alert -->
+<div
+  *ngIf="showUpdate"
+  class="tk-update-alert">
+  <p>
+    업데이트가 있습니다. <br/>
+    업데이트 하시겠습니까?
+  </p>
+
+  <button (click)="updateApplication()">
+    업데이트
+  </button>
+</div>

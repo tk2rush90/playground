@@ -1,0 +1,97 @@
+{
+  "configVersion": 1,
+  "timestamp": 1612333495456,
+  "index": "/playground/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/playground/5.aa1fad694657a4b817c5.js",
+        "/playground/6.cc8503f27f0f9095bbd0.js",
+        "/playground/common.b3f02faa481f622c3ece.js",
+        "/playground/favicon.ico",
+        "/playground/index.html",
+        "/playground/main.4e47f24908ef9a1ca6b3.js",
+        "/playground/manifest.webmanifest",
+        "/playground/polyfills.7a965888daba3fbc4385.js",
+        "/playground/runtime.1e920233a5f8e984b368.js",
+        "/playground/styles.8518c57a284330ebff9c.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/playground/assets/data/playground-0.json",
+        "/playground/assets/icons/icon-128x128.png",
+        "/playground/assets/icons/icon-144x144.png",
+        "/playground/assets/icons/icon-152x152.png",
+        "/playground/assets/icons/icon-192x192.png",
+        "/playground/assets/icons/icon-384x384.png",
+        "/playground/assets/icons/icon-512x512.png",
+        "/playground/assets/icons/icon-72x72.png",
+        "/playground/assets/icons/icon-96x96.png",
+        "/playground/assets/images/logo-og.png",
+        "/playground/assets/images/logo-twitter.png",
+        "/playground/assets/images/title.png",
+        "/playground/assets/thumbnails/001.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/playground/5.aa1fad694657a4b817c5.js": "80c42af64fbdfe83393571bc36d5d704a2632523",
+    "/playground/6.cc8503f27f0f9095bbd0.js": "4d202147a535801d65726403c4faaedfb96f82da",
+    "/playground/assets/data/playground-0.json": "66f25830b58fb50e6b79beba05af65a677835c69",
+    "/playground/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/playground/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/playground/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/playground/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/playground/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/playground/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/playground/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/playground/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/playground/assets/images/logo-og.png": "67b67c03bac076e4ee884a5c1ef0b8af1fed924a",
+    "/playground/assets/images/logo-twitter.png": "f850cf762086e95c5d339198c7642ed6f09ee9f8",
+    "/playground/assets/images/title.png": "db980b863f0aa0bb1a1a0376fd7b9c1af0c28c0a",
+    "/playground/assets/thumbnails/001.png": "edfef61b0169bd0cc15de9d14856e2c37bfc12a9",
+    "/playground/common.b3f02faa481f622c3ece.js": "9b6eaf1412602f50022d66cb0d0950ac3e81f980",
+    "/playground/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/playground/index.html": "45a7dec49c7684130eada1fe149b4fc972441796",
+    "/playground/main.4e47f24908ef9a1ca6b3.js": "24d0729ecc7c455e1724e7bcb6c35c483c2fb924",
+    "/playground/manifest.webmanifest": "7243e5384337b18b3a6ca88eb1f18205b13802de",
+    "/playground/polyfills.7a965888daba3fbc4385.js": "b6380ed034569010e4ec859b66fbc7c7132365a3",
+    "/playground/runtime.1e920233a5f8e984b368.js": "834a7e493dd50b3958f317af7c2b0517f9b3acf5",
+    "/playground/styles.8518c57a284330ebff9c.css": "1b24c2b78ba7dfceca12b9eac597f03bb3a87148"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

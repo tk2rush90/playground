@@ -1,0 +1,36 @@
+@import "styles/mixins";
+@import "styles/props";
+
+// update alert
+.tk-update-alert {
+  @include padding(20px);
+  position: fixed;
+  width: 200px;
+  background-color: $white;
+  border-radius: 10px;
+  z-index: 999999;
+  bottom: 20px;
+  right: 20px;
+  box-shadow: 0 3px 10px rgba($black, .3);
+
+  p {
+    @include nanumGothic;
+    font-size: 14px;
+  }
+
+  button {
+    @include flex(center, center);
+    @include clickable();
+    width: 100%;
+    height: 35px;
+    margin-top: 20px;
+    transition: background-color .1s;
+    border-radius: 10px;
+    background-color: rgba($resolution-blue, .1);
+
+    &:hover {
+      background-color: rgba($resolution-blue, .2);
+    }
+  }
+}
+

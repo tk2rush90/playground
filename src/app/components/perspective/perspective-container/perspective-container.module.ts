@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PerspectiveContainerComponent } from './perspective-container.component';
+import {RenderDetectorModule} from '@playground/components/common/render-detector/render-detector.module';
 
 
 
@@ -10,7 +11,8 @@ import { PerspectiveContainerComponent } from './perspective-container.component
     PerspectiveContainerComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RenderDetectorModule
   ]
 })
 export class PerspectiveContainerModule { }
