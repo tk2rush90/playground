@@ -5,7 +5,8 @@
     [style.left]="item.x + 'px'"
     [style.top]="item.y + 'px'"
     [style.transform]="item.transform"
-    [style.z-index]="item.zIndex">
-    {{item.zIndex}}
+    [style.z-index]="item.zIndex"
+    class="tk-perspective-item">
+    <span>{{item.zIndex}}</span>
   </div>
 </ng-container>
