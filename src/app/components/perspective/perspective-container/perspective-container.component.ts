@@ -6,9 +6,6 @@ import {getDistanceOfFingers, getWheelDirection, WheelDirection} from '@playgrou
 import {easeOutSine} from '@playground/utils/animation.util';
 
 export interface PerspectiveObjectOptions {
-  // screen width / height
-  width: number;
-  height: number;
   // center of screen
   center: Point;
   // initial distance
@@ -29,9 +26,6 @@ export class PerspectiveObject {
   private _center: Point;
   // object center position
   private _position!: Point;
-  // screen width / height
-  private _width = 0;
-  private _height = 0;
   // circle radius
   // object will be positioned on random angle of arc of this circle
   private readonly _radius = 300;
@@ -49,8 +43,6 @@ export class PerspectiveObject {
   ]);
 
   constructor(options: PerspectiveObjectOptions) {
-    this._width = options.width;
-    this._height = options.height;
     this._center = options.center;
     this._distance = options.distance || 0;
     this._angle = randomNumber(0, 360);
@@ -104,13 +96,6 @@ export class PerspectiveObject {
   }
 
   /**
-   * return the `_distance` of object
-   */
-  get distance(): number {
-    return this._distance;
-  }
-
-  /**
    * return the animating target distance
    */
   get targetDistance(): number {
@@ -127,13 +112,9 @@ export class PerspectiveObject {
   /**
    * resize the window
    * @param center center position
-   * @param width width
-   * @param height height
    */
-  viewResized(center: Point, width: number, height: number): void {
+  viewResized(center: Point): void {
     this._center = center;
-    this._width = width;
-    this._height = height;
     this._setBasePosition();
   }
 
@@ -187,6 +168,9 @@ export class PerspectiveObject {
     this._startTime = 0;
   }
 
+  /**
+   * return `true` when object can be hidden
+   */
   get hidden(): boolean {
     return this._distance < -80 || this._distance > 40;
   }
@@ -202,8 +186,6 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
   numberOfObjects = 100;
   // perspective objects
   objects: PerspectiveObject[] = [];
-  // distance
-  distance = 0;
   // center point
   private _center: Point = {
     x: 0,
@@ -275,8 +257,6 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
       const object = new PerspectiveObject({
         center: this._center,
         distance: this.numberOfObjects,
-        width: this._view.width,
-        height: this._view.height,
       });
 
       this.objects.push(object);
@@ -341,7 +321,7 @@ export class PerspectiveContainerComponent implements OnInit, AfterViewInit, OnD
    * update center position of each object
    */
   private _updateCenterPosition(): void {
-    this.objects.forEach(object => object.viewResized(this._center, this._view.width, this._view.height));
+    this.objects.forEach(object => object.viewResized(this._center));
   }
 
   @HostListener('touchstart', ['$event'])
