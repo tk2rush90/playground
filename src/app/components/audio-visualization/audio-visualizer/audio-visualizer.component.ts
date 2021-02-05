@@ -632,7 +632,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
 
         this.toastService.open({
           message: `Can't get microphone from your device`,
-          type: ToastType.error,
+          type: ToastType.default,
         });
       })
       .finally(() => {

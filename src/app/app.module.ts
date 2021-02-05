@@ -8,6 +8,7 @@ import {SubscriptionService} from '@playground/services/common/subscription.serv
 import {ToastModule} from '@playground/components/common/toast/toast.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const {
   prefix,
@@ -19,6 +20,7 @@ const {
     AppComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
