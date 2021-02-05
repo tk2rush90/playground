@@ -1,10 +1,12 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {PixiBaseComponent} from '@playground/components/common/pixi-base/pixi-base.component';
 import {AbstractAnimationScene, AnimationService} from '@playground/services/animation/animation.service';
 import {getPointOnArc} from '@playground/utils/math.util';
 import {Point} from '@playground/utils/type.util';
 import * as PIXI from 'pixi.js';
-import {AudioColorValues,} from '@playground/components/audio-visualization/audio-visualizer/audio-color-picker/audio-color-picker.component';
+import {
+  AudioColorValues
+} from '@playground/components/audio-visualization/audio-visualizer/audio-color-picker/audio-color-picker.component';
 import {easeOutQuad} from '@playground/utils/animation.util';
 import {getRGB} from '@playground/utils/color.util';
 import {environment} from '../../../../environments/environment';
@@ -215,7 +217,9 @@ export interface AudioSoundBallOptions {
   // center position of circle
   center: Point;
   // base radius of circle
-  baseRadius: number;
+  radius: number;
+  // ball size
+  size: number;
 }
 
 export class AudioSoundBall extends AbstractAnimationScene {
@@ -226,7 +230,9 @@ export class AudioSoundBall extends AbstractAnimationScene {
   // ball position angle
   private _angle = 0;
   // base radius
-  private _baseRadius = 0;
+  private _radius = 0;
+  // ball size
+  private _size = 1.3;
   // center of circle
   private _center: PIXI.Point = new PIXI.Point();
   // ball position
@@ -237,7 +243,8 @@ export class AudioSoundBall extends AbstractAnimationScene {
 
     this._power = options.power || 0;
     this._angle = options.angle || 0;
-    this._baseRadius = options.baseRadius;
+    this._radius = options.radius;
+    this._size = options.size;
     this._center.set(options.center.x, options.center.y);
     this._setPosition();
     this._drawBall();
@@ -247,7 +254,7 @@ export class AudioSoundBall extends AbstractAnimationScene {
    * set position for ball
    */
   private _setPosition(): void {
-    const {x, y} = getPointOnArc(this._center, this._angle, this._baseRadius + (this._power / 2));
+    const {x, y} = getPointOnArc(this._center, this._angle, this._radius + (this._power / 2));
 
     this._position.set(x, y);
   }
@@ -259,7 +266,7 @@ export class AudioSoundBall extends AbstractAnimationScene {
     this.graphics.clear();
     this.graphics.position.set(this._position.x, this._position.y);
     this.graphics.beginFill(0xffffff);
-    this.graphics.drawCircle(0, 0, 1.3);
+    this.graphics.drawCircle(0, 0, this._size);
     this.graphics.endFill();
   }
 
@@ -280,10 +287,12 @@ export class AudioSoundBall extends AbstractAnimationScene {
    * @param x center x
    * @param y center y
    * @param radius base radius
+   * @param size ball size
    */
-  resize({x, y}: Point, radius: number): void {
+  resize({x, y}: Point, radius: number, size: number): void {
     this._center.set(x, y);
-    this._baseRadius = radius;
+    this._radius = radius;
+    this._size = size;
     this._setPosition();
     this._drawBall();
   }
@@ -356,6 +365,19 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
   }
 
   /**
+   * return the ball size
+   */
+  get ballSize(): number {
+    if (this._width <= this._tabletBreakPoint) {
+      return .7;
+    } else if (this._width <= this._laptopBreakPoint) {
+      return 1;
+    } else {
+      return 1.3;
+    }
+  }
+
+  /**
    * set center position
    */
   private _setCenter(): void {
@@ -407,7 +429,8 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
             angle: step * i,
             power: this._data[i],
             center: this._center,
-            baseRadius: this.radius,
+            radius: this.radius,
+            size: this.ballSize,
           });
 
           this.container.addChild(ball.graphics);
@@ -427,7 +450,7 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
     this._height = height;
     this._setCenter();
     this._soundBalls.forEach(ball => {
-      ball.resize(this._center, this.radius);
+      ball.resize(this._center, this.radius, this.ballSize);
     });
   }
 }
@@ -491,6 +514,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
     protected elementRef: ElementRef<HTMLElement>,
     protected animationService: AnimationService,
     private toastService: ToastService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     super(renderer, elementRef, animationService);
   }
@@ -697,6 +721,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
    */
   onAudioLoad(): void {
     this.loadingAudio = true;
+    this.changeDetectorRef.detectChanges();
   }
 
   /**
@@ -705,6 +730,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
    */
   onAudioPlayed(audio: HTMLAudioElement): void {
     this.loadingAudio = false;
+    this.changeDetectorRef.detectChanges();
     this._createVisualizingData(true);
   }
 
