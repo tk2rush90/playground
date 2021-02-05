@@ -18,22 +18,31 @@ const {
   instagramUrl,
 } = environment;
 
+export interface PlayableMusic {
+  name: string;
+  credit: string;
+  link: string;
+  src: string;
+}
+
 const COLOR_STORE_KEY = 'TK_AUDIO_VISUALIZER_COLOR';
-const PLAYABLE_LIST = [
-  'A New Beginning',
-  'Acoustic Breeze',
-  'All That',
-  'Creative Minds',
-  'Dreams',
-  'E.R.F.',
-  'Elevate',
-  'Enigmatic',
-  'Happy Rock',
-  'Memories',
-  'New Dawn',
-  'Once Again',
-  'Perception',
-  'Retro Soul',
+const PLAYABLE_LIST: PlayableMusic[] = [
+  {name: 'A New Beginning', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/A New Beginning.mp3'},
+  {name: 'Acoustic Breeze', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Acoustic Breeze.mp3'},
+  {name: 'All That', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/All That.mp3'},
+  {name: 'Creative Minds', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Creative Minds.mp3'},
+  {name: 'Dreams', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Dreams.mp3'},
+  {name: 'E.R.F.', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/E.R.F..mp3'},
+  {name: 'Elevate', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Elevate.mp3'},
+  {name: 'Enigmatic', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Enigmatic.mp3'},
+  {name: 'Happy Rock', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Happy Rock.mp3'},
+  {name: 'Memories', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Memories.mp3'},
+  {name: 'New Dawn', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/New Dawn.mp3'},
+  {name: 'Once Again', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Once Again.mp3'},
+  {name: 'Perception', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Perception.mp3'},
+  {name: 'Retro Soul', credit: 'Bensound', link: 'https://www.bensound.com', src: '/bensound/Retro Soul.mp3'},
+  {name: 'Caballero', credit: 'Ofshane', link: 'https://www.youtube.com/channel/UC34Wh4ysdP50H-ThbZFFfsA', src: '/Caballero - Ofshane.mp3'},
+  {name: 'Koto San', credit: 'Ofshane', link: 'https://www.youtube.com/channel/UC34Wh4ysdP50H-ThbZFFfsA', src: '/Koto San - Ofshane.mp3'},
 ];
 
 export const BackgroundColorValues = {
@@ -369,9 +378,9 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
    */
   get ballSize(): number {
     if (this._width <= this._tabletBreakPoint) {
-      return .7;
-    } else if (this._width <= this._laptopBreakPoint) {
       return 1;
+    } else if (this._width <= this._laptopBreakPoint) {
+      return 1.15;
     } else {
       return 1.3;
     }
@@ -505,7 +514,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
   // background animator
   private _backgroundAnimator: BackgroundAnimator | undefined;
   // playlist
-  private _playlist: string[] = [];
+  private _playlist: PlayableMusic[] = [];
   // play index
   private _playIndex = 0;
 
@@ -542,7 +551,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
   /**
    * return the name of current playing music
    */
-  get playingMusic(): string {
+  get playingMusic(): PlayableMusic {
     return this._playlist[this._playIndex];
   }
 

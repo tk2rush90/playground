@@ -71,7 +71,7 @@
   <div class="tk-music-player">
     <div
       class="tk-music-name">
-      {{playingMusic}} - <a href="https://www.bensound.com/" target="_blank">Bensound</a>
+      {{playingMusic?.name}} - <a [href]="playingMusic?.link" target="_blank">{{playingMusic?.credit}}</a>
     </div>
 
     <app-icon (click)="playNextMusic()" name="play-next"></app-icon>
