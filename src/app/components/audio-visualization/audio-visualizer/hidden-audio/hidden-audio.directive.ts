@@ -17,6 +17,8 @@ export class HiddenAudioDirective implements AfterViewInit {
     this._music = music;
     this._setMusicSource();
   }
+  // emit when audio load started
+  @Output() audioLoad: EventEmitter<void> = new EventEmitter<void>();
   // emit when audio played
   @Output() audioPlayed: EventEmitter<HTMLAudioElement> = new EventEmitter<HTMLAudioElement>();
   // emit when audio ended
@@ -55,6 +57,7 @@ export class HiddenAudioDirective implements AfterViewInit {
       if (this._music) {
         this.audio.src = `${this._prefix}/assets/music/bensound/${this._music}.mp3`;
         this.audio.load();
+        this.audioLoad.emit();
       }
     }
   }

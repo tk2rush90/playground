@@ -29,15 +29,21 @@
   <!-- actions -->
   <div class="tk-actions">
     <button (click)="playPresetMusic()" appStrokeButton color="white-transparent">
-      play preset music
-    </button>
-
-    <button (click)="onMicrophoneButtonClicked()" appStrokeButton color="white-transparent">
-      <ng-container *ngIf="loadingMicrophone; else text">
+      <ng-container *ngIf="loadingAudio; else audioText">
         <app-audio-loading></app-audio-loading>
       </ng-container>
 
-      <ng-template #text>
+      <ng-template #audioText>
+        play preset music
+      </ng-template>
+    </button>
+
+    <button (click)="onMicrophoneButtonClicked()" appStrokeButton color="white-transparent">
+      <ng-container *ngIf="loadingMicrophone; else micText">
+        <app-audio-loading></app-audio-loading>
+      </ng-container>
+
+      <ng-template #micText>
         <ng-container *ngIf="usingMicrophone; else noMicrophone">
           stop using microphone
         </ng-container>
@@ -55,6 +61,7 @@
   <audio
     #audio
     (audioEnded)="playNextMusic()"
+    (audioLoad)="onAudioLoad()"
     (audioPlayed)="onAudioPlayed($event)"
     (rendered)="onAudioRendered(audio)"
     [music]="playingMusic"

@@ -4,13 +4,12 @@ import {AbstractAnimationScene, AnimationService} from '@playground/services/ani
 import {getPointOnArc} from '@playground/utils/math.util';
 import {Point} from '@playground/utils/type.util';
 import * as PIXI from 'pixi.js';
-import {
-  AudioColorValues,
-} from '@playground/components/audio-visualization/audio-visualizer/audio-color-picker/audio-color-picker.component';
+import {AudioColorValues,} from '@playground/components/audio-visualization/audio-visualizer/audio-color-picker/audio-color-picker.component';
 import {easeOutQuad} from '@playground/utils/animation.util';
 import {getRGB} from '@playground/utils/color.util';
 import {environment} from '../../../../environments/environment';
 import {randomNumber} from '@playground/utils/random.util';
+import {ToastService, ToastType} from '@playground/components/common/toast/service/toast.service';
 
 const {
   githubUrl,
@@ -460,6 +459,8 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
   color: keyof typeof AudioColorValues = 'purple';
   // show audio state
   showAudio = false;
+  // loading audio
+  loadingAudio = false;
   // loading microphone
   loadingMicrophone = false;
   // using microphone state
@@ -489,6 +490,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
     protected renderer: Renderer2,
     protected elementRef: ElementRef<HTMLElement>,
     protected animationService: AnimationService,
+    private toastService: ToastService,
   ) {
     super(renderer, elementRef, animationService);
   }
@@ -627,6 +629,11 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
       })
       .catch(e => {
         console.error(e);
+
+        this.toastService.open({
+          message: `Can't get microphone from your device`,
+          type: ToastType.error,
+        });
       })
       .finally(() => {
         this.loadingMicrophone = false;
@@ -686,10 +693,18 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
   }
 
   /**
+   * show loading state
+   */
+  onAudioLoad(): void {
+    this.loadingAudio = true;
+  }
+
+  /**
    * handle audio played
    * @param audio audio element
    */
   onAudioPlayed(audio: HTMLAudioElement): void {
+    this.loadingAudio = false;
     this._createVisualizingData(true);
   }
 
