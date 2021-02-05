@@ -258,7 +258,7 @@ export class AudioSoundBall extends AbstractAnimationScene {
   private _drawBall(): void {
     this.graphics.clear();
     this.graphics.position.set(this._position.x, this._position.y);
-    this.graphics.beginFill(0xffffff, .8);
+    this.graphics.beginFill(0xffffff);
     this.graphics.drawCircle(0, 0, 1.3);
     this.graphics.endFill();
   }
