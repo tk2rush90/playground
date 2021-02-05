@@ -24,7 +24,7 @@ const PLAYABLE_LIST = [
   'All That',
   'Creative Minds',
   'Dreams',
-  'E.R.F',
+  'E.R.F.',
   'Elevate',
   'Enigmatic',
   'Happy Rock',

@@ -53,7 +53,7 @@ export class HiddenAudioDirective implements AfterViewInit {
       this.audio.pause();
 
       if (this._music) {
-        this.audio.src = `${prefix}/assets/music/bensound/${this._music}.mp3`;
+        this.audio.src = `${this._prefix}/assets/music/bensound/${this._music}.mp3`;
         this.audio.load();
       }
     }
