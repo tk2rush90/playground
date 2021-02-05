@@ -123,6 +123,14 @@ export class AudioColor extends AbstractAnimationScene {
   }
 
   /**
+   * set index
+   * @param index index
+   */
+  set index(index: number) {
+    this._index = index;
+  }
+
+  /**
    * return `true` when state is expanded
    */
   get expanded(): boolean {
@@ -201,6 +209,12 @@ export class AudioColorPickerComponent implements OnInit, AfterViewInit, OnDestr
   @Input() set color(color: keyof typeof AudioColorValues) {
     this._color = color;
     this._setColorPositions();
+
+    if (this.canCollapse) {
+      this._collapseAllColors();
+    } else {
+      this._updateIndices();
+    }
   }
   // emit when color changed
   @Output() colorChange: EventEmitter<keyof typeof AudioColorValues> = new EventEmitter<keyof typeof AudioColorValues>();
@@ -275,9 +289,11 @@ export class AudioColorPickerComponent implements OnInit, AfterViewInit, OnDestr
     if (color.collapsed) {
       this._expandAllColors();
     } else if (color.expanded) {
-      this.colorChange.emit(color.color);
-      this._setColorPositions(color.color);
-      this._collapseAllColors();
+      if (this._color === color.color) {
+        this._collapseAllColors();
+      } else {
+        this.colorChange.emit(color.color);
+      }
     }
   }
 
@@ -307,6 +323,22 @@ export class AudioColorPickerComponent implements OnInit, AfterViewInit, OnDestr
 
     this._subscribeAnimationFinished();
     this.animationService.startAnimation();
+  }
+
+  /**
+   * update indices of color
+   */
+  private _updateIndices(): void {
+    this.colors.forEach(item => {
+      item.index = this._colors.indexOf(item.color);
+    });
+  }
+
+  /**
+   * return true when collapsable
+   */
+  get canCollapse(): boolean {
+    return this.colors.some(item => !item.collapsed);
   }
 
   /**
