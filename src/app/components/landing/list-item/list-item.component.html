@@ -1,0 +1,29 @@
+<!-- list effect -->
+<div
+  *ngIf="showFill"
+  class="tk-list-effect"></div>
+
+<!-- main container -->
+<div
+  *ngIf="playground"
+  class="tk-list-container">
+  <!-- title -->
+  <div class="tk-list-title">
+    {{playground.title}}
+  </div>
+
+  <!-- container -->
+  <div class="tk-list-tech-container">
+    <ng-container *ngFor="let item of playground.tech; let index = index">
+      <!-- dot -->
+      <div
+        *ngIf="index !== 0"
+        class="tk-list-tech-dot"></div>
+
+      <!-- tech -->
+      <div class="tk-list-tech">
+        {{item}}
+      </div>
+    </ng-container>
+  </div>
+</div>

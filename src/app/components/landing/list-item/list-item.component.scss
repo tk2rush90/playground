@@ -1,0 +1,72 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  position: relative;
+  display: block;
+  user-select: none;
+
+  &:active {
+    .tk-list-effect {
+      background-color: rgba($white, .4);
+    }
+  }
+}
+
+// list effect
+.tk-list-effect {
+  @include topLeft;
+  position: absolute;
+  width: 0;
+  height: 100%;
+  background-color: rgba($white, .2);
+  animation: fill .2s ease-out forwards;
+  transition: background-color .1s;
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+// list container
+.tk-list-container {
+  @include padding(20px);
+  @include flex(flex-start, center, column);
+  position: relative;
+  width: 100%;
+  min-height: 100px;
+  box-shadow: 0 3px 6px rgba($black, .16);
+  z-index: 10;
+}
+
+// list title
+.tk-list-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: $white;
+}
+
+// tech container
+.tk-list-tech-container {
+  @include flex(center);
+  margin-top: 10px;
+}
+
+// tech dot
+.tk-list-tech-dot {
+  @include ball(2px);
+  margin: 0 6px;
+  background-color: rgba($white, .6);
+}
+
+// tech item
+.tk-list-tech {
+  color: rgba($white, .6);
+  font-size: 13px;
+}

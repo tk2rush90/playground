@@ -1,0 +1,60 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  @include flex(center, null, column);
+  font-weight: 600;
+}
+
+// main title
+.tk-main-title {
+  @include quickSand;
+  font-size: 24px;
+}
+
+// sub title
+.tk-sub-title {
+  font-size: 15px;
+
+  span {
+    @include quickSand;
+  }
+}
+
+// blue color
+.tk-blue-color {
+  color: $royal-blue2;
+}
+
+// ocean color
+.tk-ocean-color {
+  color: $bright-turquoise;
+}
+
+// blue background
+.tk-blue-background {
+  background-color: $royal-blue2;
+}
+
+// ocean background
+.tk-ocean-background {
+  background-color: $bright-turquoise;
+}
+
+// under bar container
+.tk-under-bar-container {
+  @include rect(81px, 3px);
+  @include flex(stretch);
+  margin-top: 3px;
+}
+
+// under bar
+.tk-under-bar {
+  &.tk-blue-background {
+    width: 30px;
+  }
+
+  &.tk-ocean-background {
+    width: 51px;
+  }
+}

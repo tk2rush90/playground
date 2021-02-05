@@ -1,0 +1,15 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  display: block;
+}
+
+:host {
+  ::ng-deep {
+    svg {
+      @include box(100%);
+      display: block;
+    }
+  }
+}

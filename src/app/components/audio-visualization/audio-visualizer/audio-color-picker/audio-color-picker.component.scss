@@ -1,0 +1,12 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  position: relative;
+  display: block;
+  width: 35px;
+}
+
+app-audio-color-item {
+  position: absolute;
+}

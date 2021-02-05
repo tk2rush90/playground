@@ -1,0 +1,167 @@
+@import "styles/mixins";
+@import "styles/props";
+
+:host {
+  ::ng-deep {
+    * {
+      user-select: none;
+    }
+  }
+
+  @include flex(center, center);
+  background-image: linear-gradient(180deg, $bossanova, $violet-blue);
+}
+
+// control container
+.tk-control-container {
+  @include ball(400px);
+  @include border(3px solid $white);
+  @include flex(center, space-between, column);
+  @include padding(60px 0);
+  position: absolute;
+  z-index: 10;
+
+  @include under(1024px) {
+    @include ball(350px);
+    @include padding(50px 0);
+  }
+
+  @include under(768px) {
+    @include ball(300px);
+    @include padding(40px 0);
+  }
+}
+
+// control header
+.tk-control-header {
+  @include flex(center, null, column);
+}
+
+// control title
+.tk-control-title {
+  @include quickSand;
+  font-size: 20px;
+  color: $white;
+
+  @include under(1024px) {
+    font-size: 18px;
+  }
+}
+
+// svg logo
+.tk-logo {
+  display: block;
+  margin-top: 6.5px;
+
+  @include under(1024px) {
+    width: 70px;
+  }
+}
+
+app-icon {
+  &[tk-name='github'] {
+    ::ng-deep {
+      path {
+        fill: $white;
+      }
+    }
+  }
+
+  &[tk-name='instagram'] {
+    ::ng-deep {
+      rect, circle {
+        stroke: $white;
+      }
+    }
+  }
+}
+
+// sns links
+.tk-sns-links {
+  a {
+    @include box(30px);
+  }
+
+  app-icon {
+    @include box(24px);
+  }
+}
+
+// action wrapper
+.tk-actions {
+  @include flex(stretch, null, column);
+}
+
+// button size
+button {
+  @include rect(170px, 40px);
+  font-size: 13px;
+  text-transform: uppercase;
+
+  @include under(1024px) {
+    @include rect(150px, 35px);
+    font-size: 12px;
+  }
+}
+
+// button space
+button + button {
+  margin-top: 10px;
+}
+
+// simple music player
+.tk-music-player {
+  @include flex(center);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+// music name
+.tk-music-name {
+  @include quickSand;
+  font-size: 13px;
+  color: $white;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+// icons in music player
+.tk-music-player {
+  app-icon {
+    @include clickable();
+    @include box(20px);
+    margin-left: 10px;
+
+    &:hover {
+      ::ng-deep {
+        path, rect {
+          fill: darken($white, 10%);
+        }
+      }
+    }
+
+    &:active {
+      ::ng-deep {
+        path, rect {
+          fill: darken($white, 20%);
+        }
+      }
+    }
+  }
+
+  app-icon + app-icon {
+    margin-left: 5px;
+  }
+}
+
+// set color picker on top right
+app-audio-color-picker {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}

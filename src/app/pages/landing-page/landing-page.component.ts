@@ -8,6 +8,8 @@ import {PlaygroundListItem} from '@playground/models/playground-list-item';
 
 const {
   prefix,
+  githubUrl,
+  instagramUrl,
 } = environment;
 
 @Component({
@@ -29,6 +31,9 @@ export class LandingPageComponent implements OnInit {
   loading = false;
   // data list
   data: PlaygroundListItem[] = [];
+  // sns urls
+  githubUrl = githubUrl;
+  instagramUrl = instagramUrl;
 
   constructor(
     private toastService: ToastService,

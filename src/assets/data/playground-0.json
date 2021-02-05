@@ -1,8 +1,21 @@
 {
   "data": [
     {
-      "thumbnail": "/assets/thumbnails/001.png",
-      "routes": ["/perspective"]
+      "color": "#7B3C7B",
+      "route": "/?p=/audio-visualization",
+      "title": "Sound Visualizer",
+      "tech": [
+        "Web Audio API",
+        "PIXI.js"
+      ]
+    },
+    {
+      "color": "#333333",
+      "route": "/?p=/perspective",
+      "title": "Perspective Scroller",
+      "tech": [
+        "CSS Perspective"
+      ]
     }
   ],
   "hasNext": false

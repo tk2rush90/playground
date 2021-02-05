@@ -15,6 +15,11 @@ const routes: Routes = [
     path: 'perspective',
     loadChildren: () => import('./pages/perspective-page/perspective-page.module').then(m => m.PerspectivePageModule),
   },
+  {
+    path: 'audio-visualization',
+    loadChildren: () =>
+      import('./pages/audio-visualization-page/audio-visualization-page.module').then(m => m.AudioVisualizationPageModule),
+  },
 ];
 
 @NgModule({

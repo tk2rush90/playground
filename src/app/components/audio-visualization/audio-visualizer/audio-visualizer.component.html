@@ -1,0 +1,79 @@
+<!-- control container -->
+<div class="tk-control-container">
+  <!-- header -->
+  <div class="tk-control-header">
+    <!-- title -->
+    <div class="tk-control-title">
+      Sound Visualizer
+    </div>
+
+    <!-- logo -->
+    <svg class="tk-logo" width="90.368" height="29.648" viewBox="0 0 90.368 29.648" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="m0 16.211h19.667s1.307-14.107 3.236-11.531 1.743 22.879 4.481 21.836 3.485-26.62 6.473-26.007c2.988 0.613 2.862 27.417 5.477 28.46s2.552-23.676 4.979-24.289 2.24 22.879 4.729 21.836 2.365-26.62 5.228-26.007c2.863 0.613 3.672 26.252 6.224 28.46s2.24-17.6 3.983-19.628c1.743-2.028 1.867 9.814 2.987 11.531s1.494-4.662 1.494-4.662h21.409"
+        fill="none" stroke="#fff" data-name="Path 8"/>
+    </svg>
+  </div>
+
+  <!-- links -->
+  <div class="tk-sns-links">
+    <a [href]="githubUrl" target="_blank">
+      <app-icon name="github"></app-icon>
+    </a>
+
+    <a [href]="instagramUrl" target="_blank">
+      <app-icon name="instagram"></app-icon>
+    </a>
+  </div>
+
+  <!-- actions -->
+  <div class="tk-actions">
+    <button (click)="playPresetMusic()" appStrokeButton color="white-transparent">
+      play preset music
+    </button>
+
+    <button (click)="onMicrophoneButtonClicked()" appStrokeButton color="white-transparent">
+      <ng-container *ngIf="loadingMicrophone; else text">
+        <app-audio-loading></app-audio-loading>
+      </ng-container>
+
+      <ng-template #text>
+        <ng-container *ngIf="usingMicrophone; else noMicrophone">
+          stop using microphone
+        </ng-container>
+
+        <ng-template #noMicrophone>
+          use microphone
+        </ng-template>
+      </ng-template>
+    </button>
+  </div>
+</div>
+
+<!-- audio element -->
+<ng-container *ngIf="showAudio">
+  <audio
+    #audio
+    (audioEnded)="playNextMusic()"
+    (audioPlayed)="onAudioPlayed($event)"
+    (rendered)="onAudioRendered(audio)"
+    [music]="playingMusic"
+    appHiddenAudio
+    appRenderDetector></audio>
+
+  <div class="tk-music-player">
+    <div
+      class="tk-music-name">
+      {{playingMusic}} - <a href="https://www.bensound.com/" target="_blank">Bensound</a>
+    </div>
+
+    <app-icon (click)="playNextMusic()" name="play-next"></app-icon>
+
+    <app-icon (click)="stopPlaying()" name="stop-playing"></app-icon>
+  </div>
+</ng-container>
+
+<!-- color picker -->
+<app-audio-color-picker
+  (colorChange)="onColorChange($event)"
+  [color]="color"></app-audio-color-picker>

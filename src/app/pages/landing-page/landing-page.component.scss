@@ -6,69 +6,40 @@
   @include topLeft;
   @include flex(stretch, null, column, nowrap);
   position: absolute;
-  background-color: #2A3030;
   overflow: auto;
 }
 
-// header
+// main header
 .tk-header {
+  @include padding(20px 0);
   @include flex(center, center);
-  @include padding(50px 0);
 }
 
-// image container
-.tk-image-container {
-  @include box(120px);
-  @include flex(center, center);
-  background-color: $white;
-  user-select: none;
-
-  img {
-    display: block;
-    pointer-events: none;
-  }
+// sns links
+.tk-sns-links {
+  margin-top: 30px;
 }
 
-// body
-.tk-body {
-  @include flex(center, null, column);
-  @include padding(50px 0);
+// description
+.tk-description {
+  font-size: 13px;
+  text-align: center;
+  color: $dark-grey;
+  max-width: 100%;
+  margin: 10px 0 50px;
 }
 
 // list container
 .tk-list-container {
   width: calc(100% - 40px);
-  max-width: 800px;
-}
+  margin: 0 auto;
+  max-width: 540px;
 
-// background item
-.tk-background-item {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-// shadow item
-.tk-shadow-item {
-  transition: box-shadow .1s;
-  box-shadow: 0 3px 10px rgba($black, .5);
-
-  &:hover {
-    box-shadow: 0 3px 20px rgba($black, .5);
+  a {
+    display: block;
   }
-}
 
-// list item
-.tk-list-item {
-  position: relative;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  display: block;
-  width: 100%;
-  height: 250px;
-}
-
-.tk-list-item + .tk-list-item {
-  margin-top: 40px;
+  a + a {
+    margin-top: 20px;
+  }
 }

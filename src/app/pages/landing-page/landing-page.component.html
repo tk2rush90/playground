@@ -1,19 +1,31 @@
 <!-- header -->
 <div class="tk-header">
-  <!-- image container -->
-  <div class="tk-image-container">
-    <img [src]="prefix + '/assets/images/title.png'" alt="Scripter Playground">
-  </div>
+  <app-title></app-title>
 </div>
 
-<!-- body -->
-<div class="tk-body">
-  <div class="tk-list-container">
-    <a
-      *ngFor="let item of data; let index = index"
-      [routerLink]="item.routes"
-      [class.span-2]="item.wide"
-      [style.background-image]="item.backgroundImage"
-      class="tk-list-item tk-background-item tk-shadow-item"></a>
-  </div>
+<!-- links -->
+<div class="tk-sns-links">
+  <a [href]="githubUrl" target="_blank">
+    <app-icon name="github"></app-icon>
+  </a>
+
+  <a [href]="instagramUrl" target="_blank">
+    <app-icon name="instagram"></app-icon>
+  </a>
+</div>
+
+<!-- description -->
+<div class="tk-description">
+  JavaScript Playground by Scripter
+</div>
+
+<!-- list container -->
+<div class="tk-list-container">
+  <!-- render list item -->
+  <a
+    *ngFor="let item of data"
+    [href]="prefix + item.route">
+    <app-list-item
+      [playground]="item"></app-list-item>
+  </a>
 </div>

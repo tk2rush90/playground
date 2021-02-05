@@ -1,16 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 @import "styles/preset";
 @import "styles/mixins";
 @import "styles/props";
+@import "components/common/stroke-button/stroke-button";
 
 * {
   @include nanumGothic;
   -webkit-overflow-scrolling: touch;
 }
 
-a {
-  &:hover {
-    text-decoration: underline;
+// home button
+.tk-home-button {
+  @include clickable();
+  @include box(24px);
+
+  &.white {
+    path {
+      fill: $white;
+    }
+
+    &:hover {
+      path {
+        fill: rgba($white, .8);
+      }
+    }
+
+    &:active {
+      path {
+        fill: rgba($white, .6);
+      }
+    }
+  }
+}
+
+
+// sns links
+.tk-sns-links {
+  @include flex(center, center);
+
+  a {
+    @include flex(center, center);
+    @include box(24px);
+    @include clickable();
+
+    &:hover {
+      opacity: .8;
+    }
+
+    &:active {
+      opacity: .6;
+    }
+  }
+
+  a + a {
+    margin-left: 5px;
+  }
+
+  app-icon {
+    @include box(20px);
   }
 }
