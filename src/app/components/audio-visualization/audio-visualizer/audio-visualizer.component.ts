@@ -19,6 +19,8 @@ const {
   paypalUrl,
 } = environment;
 
+const FFT_SIZE = Math.pow(2, 11);
+
 export interface PlayableMusic {
   name: string;
   credit: string;
@@ -226,7 +228,7 @@ export class BackgroundAnimator extends AbstractAnimationScene {
 export interface AudioSoundBallOptions {
   // sound power
   power?: number;
-  // ball position angle
+  // ball position angle in **radian**
   angle?: number;
   // center position of circle
   center: Point;
@@ -246,7 +248,7 @@ export class AudioSoundBall extends AbstractAnimationScene {
   // base radius
   private _radius = 0;
   // ball size
-  private _size = 1.3;
+  private _size = 0;
   // center of circle
   private _center: PIXI.Point = new PIXI.Point();
   // ball position
@@ -268,7 +270,7 @@ export class AudioSoundBall extends AbstractAnimationScene {
    * set position for ball
    */
   private _setPosition(): void {
-    const {x, y} = getPointOnArc(this._center, this._angle, this._radius + (this._power / 2));
+    const {x, y} = getPointOnArc(this._center, this._angle, this._radius + (this._power * .5));
 
     this._position.set(x, y);
   }
@@ -381,13 +383,13 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
   /**
    * return the ball size
    */
-  get ballSize(): number {
+  get size(): number {
     if (this._width <= this._tabletBreakPoint) {
-      return 1;
+      return 1.1;
     } else if (this._width <= this._laptopBreakPoint) {
-      return 1.15;
-    } else {
       return 1.3;
+    } else {
+      return 1.5;
     }
   }
 
@@ -395,7 +397,7 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
    * set center position
    */
   private _setCenter(): void {
-    this._center.set(this._width / 2, this._height / 2);
+    this._center.set(this._width * .5, this._height * .5);
     this._graphics.position.set(this._center.x, this._center.y);
   }
 
@@ -431,7 +433,7 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
    */
   private _createBalls(): void {
     if (this._data) {
-      const step = 360 / this._data.length;
+      const step = 1;
 
       for (let i = 0; i < this._data.length; i++) {
         if (this._soundBalls[i]) {
@@ -440,11 +442,11 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
           ball.update(step * i, this._data[i]);
         } else {
           const ball = new AudioSoundBall({
-            angle: step * i,
+            angle: (step * i),
             power: this._data[i],
             center: this._center,
             radius: this.radius,
-            size: this.ballSize,
+            size: this.size,
           });
 
           this.container.addChild(ball.graphics);
@@ -464,7 +466,7 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
     this._height = height;
     this._setCenter();
     this._soundBalls.forEach(ball => {
-      ball.resize(this._center, this.radius, this.ballSize);
+      ball.resize(this._center, this.radius, this.size);
     });
   }
 }
@@ -514,7 +516,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
   // buffer length
   private _bufferLength = 0;
   // uint8 array data
-  private _data: Uint8Array = new Uint8Array(1024);
+  private _data: Uint8Array = new Uint8Array(FFT_SIZE * .5);
   // audio visualizing circle
   private _audioVisualizingCircle: AudioVisualizingCircle | undefined;
   // background animator
@@ -780,7 +782,7 @@ export class AudioVisualizerComponent extends PixiBaseComponent implements OnIni
         this._analyser.connect(this._context.destination);
       }
 
-      this._analyser.fftSize = Math.pow(2, 10);
+      this._analyser.fftSize = FFT_SIZE;
 
       this._bufferLength = this._analyser.frequencyBinCount;
       this._data = new Uint8Array(this._bufferLength);
