@@ -3,6 +3,7 @@ import {PlayableMusic} from '@playground/components/audio-visualization/audio-vi
 import {environment} from '../../../../../environments/environment';
 
 const {
+  prefix,
   musicUrl,
 } = environment;
 
@@ -31,6 +32,9 @@ export class HiddenAudioDirective implements AfterViewInit {
   // delay before playing music
   private _delay = 500;
 
+  private _prefix = prefix;
+  private _musicUrl = musicUrl;
+
   constructor(
     private elementRef: ElementRef<HTMLAudioElement>,
   ) { }
@@ -54,7 +58,7 @@ export class HiddenAudioDirective implements AfterViewInit {
       this.audio.pause();
 
       if (this._music) {
-        this.audio.src = `${musicUrl}${this._music.src}`;
+        this.audio.src = `${prefix}${musicUrl}${this._music.src}`;
         this.audio.load();
         this.audioLoad.emit();
       }
