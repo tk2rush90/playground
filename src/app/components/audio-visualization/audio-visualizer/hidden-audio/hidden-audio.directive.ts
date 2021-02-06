@@ -1,9 +1,9 @@
 import {AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {environment} from '../../../../../environments/environment';
 import {PlayableMusic} from '@playground/components/audio-visualization/audio-visualizer/audio-visualizer.component';
+import {environment} from '../../../../../environments/environment';
 
 const {
-  prefix,
+  musicUrl,
 } = environment;
 
 @Directive({
@@ -30,8 +30,6 @@ export class HiddenAudioDirective implements AfterViewInit {
   private _timer: any;
   // delay before playing music
   private _delay = 500;
-  // prefix
-  private _prefix = prefix;
 
   constructor(
     private elementRef: ElementRef<HTMLAudioElement>,
@@ -56,7 +54,7 @@ export class HiddenAudioDirective implements AfterViewInit {
       this.audio.pause();
 
       if (this._music) {
-        this.audio.src = `${this._prefix}/assets/music/${this._music.src}`;
+        this.audio.src = `${musicUrl}${this._music.src}`;
         this.audio.load();
         this.audioLoad.emit();
       }

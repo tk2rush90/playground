@@ -1,7 +1,7 @@
 <app-audio-color-item
   (click)="onColorClicked(item)"
   *ngFor="let item of colors"
-  [style.background-color]="item.color"
+  [style.background-color]="item.backgroundColor"
   [style.display]="item.hidden ? 'none' : 'block'"
   [style.transform]="item.transform"
   [style.z-index]="item.zIndex"></app-audio-color-item>

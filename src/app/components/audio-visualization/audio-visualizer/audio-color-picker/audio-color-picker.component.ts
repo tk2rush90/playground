@@ -14,6 +14,7 @@ export enum AudioColorValues {
   blue = '#3574DF',
   red = '#FF3E3E',
   orange = '#FF8811',
+  green = '#558740',
 }
 
 export enum AudioColorState {
@@ -226,6 +227,7 @@ export class AudioColorPickerComponent implements OnInit, AfterViewInit, OnDestr
     new AudioColor({ color: 'blue', index: 1 }),
     new AudioColor({ color: 'red', index: 2 }),
     new AudioColor({ color: 'orange', index: 3 }),
+    new AudioColor({ color: 'green', index: 4 }),
   ];
   // color values
   private _colors: (keyof typeof AudioColorValues)[] = [
@@ -233,6 +235,7 @@ export class AudioColorPickerComponent implements OnInit, AfterViewInit, OnDestr
     'blue',
     'red',
     'orange',
+    'green',
   ];
   // color
   private _color: keyof typeof AudioColorValues = 'purple';
