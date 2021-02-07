@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {PixiBaseComponent} from '@playground/components/common/pixi-base/pixi-base.component';
 import {AbstractAnimationScene, AnimationService} from '@playground/services/animation/animation.service';
-import {getPointOnArc} from '@playground/utils/math.util';
+import {getPointOnArc, toRadian} from '@playground/utils/math.util';
 import {Point} from '@playground/utils/type.util';
 import * as PIXI from 'pixi.js';
 import {
@@ -19,7 +19,7 @@ const {
   paypalUrl,
 } = environment;
 
-const FFT_SIZE = Math.pow(2, 11);
+const FFT_SIZE = Math.pow(2, 6);
 
 export interface PlayableMusic {
   name: string;
@@ -270,7 +270,8 @@ export class AudioSoundBall extends AbstractAnimationScene {
    * set position for ball
    */
   private _setPosition(): void {
-    const {x, y} = getPointOnArc(this._center, this._angle, this._radius + (this._power * .5));
+    const corrector = (this._radius * .5) / 255;
+    const {x, y} = getPointOnArc(this._center, toRadian(this._angle), this._radius + (this._power * corrector));
 
     this._position.set(x, y);
   }
@@ -433,25 +434,55 @@ export class AudioVisualizingCircle extends AbstractAnimationScene {
    */
   private _createBalls(): void {
     if (this._data) {
-      const step = 1;
+      const step = 30;
+      const jStep = 12;
+      const length = this._data.length;
 
-      for (let i = 0; i < this._data.length; i++) {
-        if (this._soundBalls[i]) {
-          const ball = this._soundBalls[i];
+      for (let i = 0; i < length * 2; i++) {
+        for (let j = 0; j < jStep; j++) {
+          // default
+          let position = i;
+          let dataIndex = i;
+          let ballIndex = (jStep * i) + j;
+          let angle = step * j + position;
 
-          ball.update(step * i, this._data[i]);
-        } else {
-          const ball = new AudioSoundBall({
-            angle: (step * i),
-            power: this._data[i],
-            center: this._center,
-            radius: this.radius,
-            size: this.size,
-          });
+          // reversed
+          if (i > length) {
+            position = i - length;
+            dataIndex = length - (i - length);
+            ballIndex = (jStep * i) + j;
+            angle = position - (step * j);
+          }
 
-          this.container.addChild(ball.graphics);
-          this._soundBalls.push(ball);
+          this._updateOrCreateBall(ballIndex, dataIndex, angle);
         }
+      }
+    }
+  }
+
+  /**
+   * update or create ball index
+   * @param index rendered ball index
+   * @param dataIndex data index
+   * @param angle angle
+   */
+  private _updateOrCreateBall(index: number, dataIndex: number, angle: number): void {
+    if (this._data) {
+      if (this._soundBalls[index]) {
+        const ball = this._soundBalls[index];
+
+        ball.update(angle, this._data[dataIndex]);
+      } else {
+        const ball = new AudioSoundBall({
+          angle,
+          power: this._data[dataIndex],
+          center: this._center,
+          radius: this.radius,
+          size: this.size,
+        });
+
+        this.container.addChild(ball.graphics);
+        this._soundBalls.push(ball);
       }
     }
   }

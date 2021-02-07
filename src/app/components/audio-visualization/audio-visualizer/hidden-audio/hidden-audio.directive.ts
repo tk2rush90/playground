@@ -32,9 +32,6 @@ export class HiddenAudioDirective implements AfterViewInit {
   // delay before playing music
   private _delay = 500;
 
-  private _prefix = prefix;
-  private _musicUrl = musicUrl;
-
   constructor(
     private elementRef: ElementRef<HTMLAudioElement>,
   ) { }
